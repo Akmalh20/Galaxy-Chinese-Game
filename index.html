@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misi Galaksi: Unit 1 老师早安</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Poppins:wght@400;600;800&display=swap');
+
+        :root {
+            --space-dark: #050b18;
+            --neon-blue: #00f2ff;
+            --neon-purple: #bc13fe;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--space-dark);
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .hanzi {
+            font-family: 'ZCOOL KuaiLe', cursive;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+        }
+
+        .card-glow:hover {
+            box-shadow: 0 0 25px var(--neon-blue);
+            transform: translateY(-8px);
+            border-color: var(--neon-blue);
+        }
+
+        .orbit-anim {
+            animation: orbit 10s linear infinite;
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(10px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(10px) rotate(-360deg); }
+        }
+
+        .drop-target {
+            min-height: 70px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px dashed rgba(0, 242, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .drop-target.hovered {
+            background: rgba(0, 242, 255, 0.1);
+            border-color: var(--neon-blue);
+        }
+
+        .draggable {
+            cursor: grab;
+            transition: transform 0.2s;
+        }
+
+        .draggable:active {
+            cursor: grabbing;
+        }
+
+        .matched {
+            animation: success-pulse 0.5s ease-out;
+            background: #065f46 !important;
+            border-color: #4ade80 !important;
+        }
+
+        @keyframes success-pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px #4ade80; }
+            100% { transform: scale(1); }
+        }
+
+        /* Music Visualizer Animation */
+        .bar {
+            width: 4px;
+            height: 15px;
+            background: var(--neon-blue);
+            margin: 0 2px;
+            border-radius: 2px;
+            transition: height 0.2s;
+        }
+
+        .playing .bar {
+            animation: pulse 0.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            from { height: 5px; opacity: 0.5; }
+            to { height: 20px; opacity: 1; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-10 flex flex-col items-center">
+
+    <!-- Music Player Control -->
+    <div class="fixed top-4 right-4 z-50 flex items-center gap-3 glass-panel px-4 py-2 border-cyan-500/30">
+        <div id="music-visualizer" class="flex items-end h-5">
+            <div class="bar" style="animation-delay: 0s"></div>
+            <div class="bar" style="animation-delay: 0.1s"></div>
+            <div class="bar" style="animation-delay: 0.2s"></div>
+        </div>
+        <button id="bg-music-btn" onclick="toggleMusic()" class="text-sm font-bold flex items-center gap-2">
+            <span id="music-icon">🎵</span> <span id="music-status">Pasang Muzik</span>
+        </button>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="text-center mb-12 relative">
+        <div class="absolute -top-10 -left-10 w-24 h-24 bg-purple-600 rounded-full blur-[60px] opacity-50 orbit-anim"></div>
+        <h1 class="text-5xl md:text-7xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mb-4">
+            MISI GALAKSI
+        </h1>
+        <p class="text-xl text-blue-200 font-semibold uppercase tracking-widest">Unit 1: 老师早安</p>
+    </header>
+
+    <main class="w-full max-w-5xl space-y-16">
+        
+        <!-- Pembelajaran -->
+        <section>
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 bg-cyan-500 rounded-full flex items-center justify-center shadow-[0_0_15px_cyan]">
+                    <span class="text-xl">📚</span>
+                </div>
+                <h2 class="text-3xl font-bold">Stesen Pembelajaran</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <button onclick="sebut('老师')" class="glass-panel p-6 card-glow transition-all text-center group">
+                    <div class="text-6xl mb-4 group-hover:scale-125 transition-transform duration-500">👨‍🏫</div>
+                    <div class="hanzi text-5xl text-cyan-400 mb-2">老师</div>
+                    <div class="text-yellow-300 font-bold mb-4 tracking-widest">lǎo shī</div>
+                    <div class="border-t border-white/10 pt-4">
+                        <p class="text-sm font-semibold text-white">Cikgu</p>
+                        <p class="text-xs text-gray-400 italic">Teacher</p>
+                    </div>
+                </button>
+
+                <button onclick="sebut('早安')" class="glass-panel p-6 card-glow transition-all text-center group">
+                    <div class="text-6xl mb-4 group-hover:scale-125 transition-transform duration-500">☀️</div>
+                    <div class="hanzi text-5xl text-cyan-400 mb-2">早安</div>
+                    <div class="text-yellow-300 font-bold mb-4 tracking-widest">zǎo ān</div>
+                    <div class="border-t border-white/10 pt-4">
+                        <p class="text-sm font-semibold text-white">Selamat Pagi</p>
+                        <p class="text-xs text-gray-400 italic">Good Morning</p>
+                    </div>
+                </button>
+
+                <button onclick="sebut('请坐')" class="glass-panel p-6 card-glow transition-all text-center group">
+                    <div class="text-6xl mb-4 group-hover:scale-125 transition-transform duration-500">🪑</div>
+                    <div class="hanzi text-5xl text-cyan-400 mb-2">请坐</div>
+                    <div class="text-yellow-300 font-bold mb-4 tracking-widest">qǐng zuò</div>
+                    <div class="border-t border-white/10 pt-4">
+                        <p class="text-sm font-semibold text-white">Sila Duduk</p>
+                        <p class="text-xs text-gray-400 italic">Please Sit</p>
+                    </div>
+                </button>
+
+                <button onclick="sebut('谢谢')" class="glass-panel p-6 card-glow transition-all text-center group">
+                    <div class="text-6xl mb-4 group-hover:scale-125 transition-transform duration-500">🙏</div>
+                    <div class="hanzi text-5xl text-cyan-400 mb-2">谢谢</div>
+                    <div class="text-yellow-300 font-bold mb-4 tracking-widest">xiè xiè</div>
+                    <div class="border-t border-white/10 pt-4">
+                        <p class="text-sm font-semibold text-white">Terima Kasih</p>
+                        <p class="text-xs text-gray-400 italic">Thank You</p>
+                    </div>
+                </button>
+            </div>
+            <p class="text-center mt-6 text-blue-300 italic animate-pulse">Klik kad untuk mendengar sebutan!</p>
+        </section>
+
+        <!-- Permainan -->
+        <section class="glass-panel p-8 md:p-12 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-20 text-8xl">🛸</div>
+            
+            <div class="relative z-10 text-center mb-10">
+                <h2 class="text-3xl font-bold mb-2 uppercase tracking-widest">Cabaran Kod Pinyin</h2>
+                <p class="text-gray-400">Padankan sebutan Pinyin dengan Karakter (Hanzi) yang betul</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+                <div class="space-y-4" id="pinyin-pool">
+                    <div id="p-xiexie" draggable="true" ondragstart="drag(event)" class="draggable bg-gradient-to-r from-pink-600 to-purple-600 p-5 rounded-2xl shadow-xl font-bold text-center text-xl">
+                        xiè xiè
+                    </div>
+                    <div id="p-laoshi" draggable="true" ondragstart="drag(event)" class="draggable bg-gradient-to-r from-blue-600 to-cyan-600 p-5 rounded-2xl shadow-xl font-bold text-center text-xl">
+                        lǎo shī
+                    </div>
+                    <div id="p-qingzuo" draggable="true" ondragstart="drag(event)" class="draggable bg-gradient-to-r from-emerald-600 to-teal-600 p-5 rounded-2xl shadow-xl font-bold text-center text-xl">
+                        qǐng zuò
+                    </div>
+                    <div id="p-zaoan" draggable="true" ondragstart="drag(event)" class="draggable bg-gradient-to-r from-orange-600 to-yellow-600 p-5 rounded-2xl shadow-xl font-bold text-center text-xl">
+                        zǎo ān
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="flex items-center gap-6">
+                        <div class="hanzi text-4xl w-24 text-right">老师</div>
+                        <div id="target-laoshi" ondrop="drop(event, 'p-laoshi')" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)" class="drop-target flex-1 rounded-2xl flex items-center justify-center font-bold text-cyan-300"></div>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <div class="hanzi text-4xl w-24 text-right">早安</div>
+                        <div id="target-zaoan" ondrop="drop(event, 'p-zaoan')" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)" class="drop-target flex-1 rounded-2xl flex items-center justify-center font-bold text-cyan-300"></div>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <div class="hanzi text-4xl w-24 text-right">谢谢</div>
+                        <div id="target-xiexie" ondrop="drop(event, 'p-xiexie')" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)" class="drop-target flex-1 rounded-2xl flex items-center justify-center font-bold text-cyan-300"></div>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <div class="hanzi text-4xl w-24 text-right">请坐</div>
+                        <div id="target-qingzuo" ondrop="drop(event, 'p-qingzuo')" ondragover="allowDrop(event)" ondragleave="leaveDrop(event)" class="drop-target flex-1 rounded-2xl flex items-center justify-center font-bold text-cyan-300"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="status-msg" class="text-center mt-10 h-10 text-2xl font-bold"></div>
+            
+            <div class="mt-8 flex justify-center">
+                <button onclick="semula()" class="bg-white/10 hover:bg-white/20 px-8 py-3 rounded-full transition-all flex items-center gap-2">
+                    <span>🔄</span> Mulakan Semula
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-20 mb-10 text-gray-500 text-sm">
+        &copy; 2024 Galaksi Bahasa Cina - Tahun 1 Unit 1
+    </footer>
+
+    <script>
+        // Space Music Synthesizer
+        let audioCtx;
+        let oscillator;
+        let gainNode;
+        let isPlaying = false;
+
+        function initMusic() {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            gainNode = audioCtx.createGain();
+            gainNode.connect(audioCtx.destination);
+            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime); // Soft volume
+        }
+
+        function playSpaceTune() {
+            if (!audioCtx) initMusic();
+            
+            oscillator = audioCtx.createOscillator();
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(220, audioCtx.currentTime); // Base frequency
+            
+            // LFO for "wah-wah" space effect
+            const lfo = audioCtx.createOscillator();
+            const lfoGain = audioCtx.createGain();
+            lfo.frequency.setValueAtTime(0.5, audioCtx.currentTime);
+            lfoGain.gain.setValueAtTime(50, audioCtx.currentTime);
+            lfo.connect(lfoGain);
+            lfoGain.connect(oscillator.frequency);
+            
+            oscillator.connect(gainNode);
+            lfo.start();
+            oscillator.start();
+        }
+
+        function toggleMusic() {
+            const btnText = document.getElementById('music-status');
+            const icon = document.getElementById('music-icon');
+            const visualizer = document.getElementById('music-visualizer');
+
+            if (!isPlaying) {
+                playSpaceTune();
+                btnText.innerText = "Berhenti Muzik";
+                icon.innerText = "⏸️";
+                visualizer.classList.add('playing');
+                isPlaying = true;
+            } else {
+                if (oscillator) oscillator.stop();
+                btnText.innerText = "Pasang Muzik";
+                icon.innerText = "🎵";
+                visualizer.classList.remove('playing');
+                isPlaying = false;
+            }
+        }
+
+        // Mandarin Text-to-Speech
+        function sebut(text) {
+            if ('speechSynthesis' in window) {
+                const ucapan = new SpeechSynthesisUtterance(text);
+                ucapan.lang = 'zh-CN';
+                ucapan.rate = 0.8;
+                window.speechSynthesis.speak(ucapan);
+            }
+        }
+
+        // Drag & Drop Logic
+        function allowDrop(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.add('hovered');
+        }
+
+        function leaveDrop(ev) {
+            ev.currentTarget.classList.remove('hovered');
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev, correctId) {
+            ev.preventDefault();
+            const dropZone = ev.currentTarget;
+            dropZone.classList.remove('hovered');
+            
+            const draggedId = ev.dataTransfer.getData("text");
+            const feedback = document.getElementById('status-msg');
+
+            if (draggedId === correctId) {
+                const element = document.getElementById(draggedId);
+                dropZone.appendChild(element);
+                element.classList.add('matched');
+                element.setAttribute('draggable', 'false');
+                feedback.innerText = "Tepat Sekali! 🌌";
+                feedback.className = "text-center mt-10 h-10 text-2xl font-bold text-green-400";
+                sebut(element.innerText);
+                checkSelesai();
+            } else {
+                feedback.innerText = "Alamak, salah koordinat! 🛸";
+                feedback.className = "text-center mt-10 h-10 text-2xl font-bold text-red-400";
+            }
+        }
+
+        function checkSelesai() {
+            const matchedCount = document.querySelectorAll('.matched').length;
+            if (matchedCount === 4) {
+                setTimeout(() => {
+                    document.getElementById('status-msg').innerHTML = "MISI BERJAYA! 🏆✨";
+                }, 500);
+            }
+        }
+
+        function semula() {
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
+
